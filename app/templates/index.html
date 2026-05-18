@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #1b257cd7;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #db3c3ca6;
+            padding: 40px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+            color: #818cf8;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #0f0f1a;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 14px;
+            color: #fff;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+        }
+        textarea:focus { border-color: #818cf8; }
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 16px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #4f46e5; }
+        button:disabled { background: #334155; cursor: not-allowed; }
+        .result {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        .result.fake { background: rgba(229, 133, 133, 0.281); border: 1px solid #ef4444; }
+        .result.true { background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; }
+        .result .label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .result.fake .label { color: #ef4444; }
+        .result.true .label { color: #22c55e; }
+        .result .confidence { color: #94a3b8; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fake News Detector</h1>
+        <p class="subtitle">Machine Learning Built-In System</p>
+        <textarea id="newsText" placeholder="Paste your news article here..."></textarea>
+        <button id="predictBtn" onclick="predict()">Analyze News</button>
+        <div class="result" id="result">
+            <div class="label" id="resultLabel"></div>
+            <div class="confidence" id="resultConfidence"></div>
+        </div>
+    </div>
+
+    <script>
+        async function predict() {
+            const text = document.getElementById("newsText").value.trim();
+            const btn = document.getElementById("predictBtn");
+            const result = document.getElementById("result");
+
+            if (!text) {
+                alert("Please enter some news text!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Analyzing...";
+            result.style.display = "none";
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text })
+                });
+
+                const data = await response.json();
+
+                result.className = "result " + (data.prediction === "Fake News" ? "fake" : "true");
+                document.getElementById("resultLabel").textContent = data.prediction;
+                document.getElementById("resultConfidence").textContent = `Confidence: ${data.confidence}%`;
+                result.style.display = "block";
+
+            } catch (err) {
+                alert("Error connecting to API!");
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Analyze News";
+        }
+    </script>
+</body>
+</html>
