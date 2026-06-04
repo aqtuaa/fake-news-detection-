@@ -4,94 +4,348 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fake News Detector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Design System Colors */
+        :root {
+            --ink: #111111;
+            --canvas: #ffffff;
+            --soft-cloud: #f5f5f5;
+            --hairline: #cacacb;
+            --hairline-soft: #e5e5e5;
+            --charcoal: #39393b;
+            --mute: #707072;
+            --sale: #d30005;
+            --success: #007d48;
+        }
+
+        /* Typography */
+        .font-display-campaign {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 96px;
+            font-weight: 500;
+            line-height: 0.9;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .font-heading-xl {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 32px;
+            line-height: 1.2;
+        }
+
+        .font-heading-lg {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 1.2;
+        }
+
+        .font-body-md {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .font-body-strong {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .font-button-md {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .font-caption-md {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .font-utility-xs {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 9px;
+            line-height: 1.75;
+        }
+
+        /* Base Layout */
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #1b257cd7;
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+            background-attachment: fixed;
+            color: var(--ink);
             min-height: 100vh;
+        }
+
+        /* Spacing System */
+        .section-spacing { padding: 48px 0; }
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 80px;
+        }
+
+        /* Editorial Campaign Hero */
+        .hero-section {
+            position: relative;
+            min-height: 800px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            overflow: hidden;
+            padding: 120px 0 80px 0;
         }
-        .container {
-            background: #db3c3ca6;
-            padding: 40px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 8px;
-            font-size: 1.8rem;
-            color: #818cf8;
-        }
-        p.subtitle {
-            text-align: center;
-            color: #94a3b8;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
-        textarea {
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
             width: 100%;
-            height: 150px;
-            background: #0f0f1a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 14px;
-            color: #fff;
-            font-size: 0.95rem;
+            margin: 0 auto;
+        }
+
+        .hero-headline {
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .hero-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--mute);
+            margin-bottom: 32px;
+        }
+
+        .input-container {
+            max-width: 100%;
+        }
+
+        /* Input Styles */
+        .search-pill {
+            width: 100%;
+            background: var(--soft-cloud);
+            border: 2px solid transparent;
+            border-radius: 24px;
+            padding: 16px 24px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--ink);
+            min-height: 180px;
             resize: none;
             outline: none;
+            transition: background 0.2s, border-color 0.2s;
         }
-        textarea:focus { border-color: #818cf8; }
-        button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 16px;
-            background: #6366f1;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
+
+        .search-pill:focus {
+            background: var(--canvas);
+            border-color: var(--ink);
+            box-shadow: 0 0 0 12px var(--soft-cloud);
         }
-        button:hover { background: #4f46e5; }
-        button:disabled { background: #334155; cursor: not-allowed; }
-        .result {
+
+        .search-pill::placeholder { color: var(--mute); }
+
+        .analyze-button {
             margin-top: 24px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+            width: 100%;
+            background: var(--ink);
+            color: var(--canvas);
+            border: 2px solid var(--ink);
+            padding: 16px 32px;
+            border-radius: 24px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .analyze-button:hover {
+            background: var(--canvas);
+            color: var(--ink);
+        }
+
+        /* Results Display */
+        .results-section {
+            padding: 48px 0 80px 0;
+        }
+
+        .result-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-radius: 0;
+            padding: 24px;
             display: none;
+            text-align: center;
         }
-        .result.fake { background: rgba(229, 133, 133, 0.281); border: 1px solid #ef4444; }
-        .result.true { background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; }
-        .result .label {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 8px;
+
+        .result-card.fake { border-color: var(--sale); }
+        .result-card.true { border-color: var(--success); }
+
+        .result-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 32px;
+            line-height: 1.2;
+            margin-bottom: 12px;
         }
-        .result.fake .label { color: #ef4444; }
-        .result.true .label { color: #22c55e; }
-        .result .confidence { color: #94a3b8; font-size: 0.9rem; }
+
+        .result-card.fake .result-label { color: var(--sale); }
+        .result-card.true .result-label { color: var(--success); }
+
+        .result-confidence {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--mute);
+            padding-top: 16px;
+            border-top: 1px solid var(--hairline);
+            text-align: center;
+        }
+
+        /* Filter Chip Style (for status) */
+        .status-chip {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .status-chip.fake {
+            background: var(--sale);
+            color: var(--canvas);
+        }
+
+        .status-chip.true {
+            background: var(--success);
+            color: var(--canvas);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--canvas);
+            border-top: 1px solid var(--hairline);
+            padding: 48px 80px 24px 80px;
+        }
+
+        .footer-columns {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-column h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--ink);
+            margin-bottom: 18px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--mute);
+            text-decoration: none;
+        }
+
+        .footer-column a:hover { color: var(--ink); }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--hairline);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 9px;
+            line-height: 1.75;
+            color: var(--mute);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1023px) {
+            .container { padding: 0 24px; }
+            .hero-headline { font-size: 64px; }
+            .hero-section { min-height: 700px; padding: 80px 0 60px 0; }
+        }
+
+        @media (max-width: 599px) {
+            .hero-headline { font-size: 48px; }
+            .hero-section { min-height: 600px; padding: 60px 0 40px 0; }
+            .search-pill:focus { box-shadow: 0 0 0 8px var(--soft-cloud); }
+            .results-section { padding: 32px 0 60px 0; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Fake News Detector</h1>
-        <p class="subtitle">Machine Learning Built-In System</p>
-        <textarea id="newsText" placeholder="Paste your news article here..."></textarea>
-        <button id="predictBtn" onclick="predict()">Analyze News</button>
-        <div class="result" id="result">
-            <div class="label" id="resultLabel"></div>
-            <div class="confidence" id="resultConfidence"></div>
+
+    <!-- Editorial Campaign Hero -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="font-display-campaign hero-headline">FAKE NEWS DETECTION</h1>
+                <p class="hero-subtitle">AI-Powered News Verification System. Detect misinformation with advanced machine learning.</p>
+                <div class="input-container">
+                    <textarea
+                        id="newsText"
+                        class="search-pill"
+                        placeholder="Paste your news article here..."
+                        aria-label="News text input"
+                    ></textarea>
+                    <button id="predictBtn" class="button-primary analyze-button" onclick="predict()">Analyze News</button>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <div class="result-card" id="result">
+                <div class="status-chip" id="statusChip"></div>
+                <div class="result-label" id="resultLabel"></div>
+                <div class="result-confidence" id="resultConfidence"></div>
+            </div>
+        </div>
+    </section>
 
     <script>
         async function predict() {
@@ -117,7 +371,10 @@
 
                 const data = await response.json();
 
-                result.className = "result " + (data.prediction === "Fake News" ? "fake" : "true");
+                const isFake = data.prediction === "Fake News";
+                result.className = "result-card " + (isFake ? "fake" : "true");
+                document.getElementById("statusChip").textContent = isFake ? "FAKE" : "VERIFIED";
+                document.getElementById("statusChip").className = "status-chip " + (isFake ? "fake" : "true");
                 document.getElementById("resultLabel").textContent = data.prediction;
                 document.getElementById("resultConfidence").textContent = `Confidence: ${data.confidence}%`;
                 result.style.display = "block";
