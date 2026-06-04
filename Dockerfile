@@ -13,4 +13,4 @@ RUN python pipeline/train.py
 
 EXPOSE 5000
 
-CMD ["python", "app/api.py"]
+CMD ["python", "app/app.py"]
